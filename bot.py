@@ -6,7 +6,7 @@ class AddressBook(UserDict):
     
     def add_record(self, record):
         
-        self.data[record.name] = record.phones
+        self.data[record.name.value] = record
 
 
 class Field:
@@ -15,25 +15,25 @@ class Field:
 
 class Name(Field):
 
-    def __init__(self, name):
+    def __init__(self, value):
 
-        self.name = name
+        self.value = value
 
 
 class Phone(Field):
    
-   def __init__(self, phone):
+   def __init__(self, value):
        
-       self.phone = phone
+       self.value = value
 
 
 class Record:
 
 
-    def __init__(self, name):
+    def __init__(self, name, phone):
 
         self.name = name
-        self.phones = []
+        self.phones = [phone]
 
 
     def add_phone(self, phone):
@@ -50,3 +50,17 @@ class Record:
 
         index = self.phones.index(phone)
         self.phones[index] = new_phone
+
+
+if __name__ == '__main__':
+    name = Name('Bill')
+    phone = Phone('1234567890')
+    rec = Record(name, phone)
+    ab = AddressBook()
+    ab.add_record(rec)
+    assert isinstance(ab['Bill'], Record)
+    assert isinstance(ab['Bill'].name, Name)
+    assert isinstance(ab['Bill'].phones, list)
+    assert isinstance(ab['Bill'].phones[0], Phone)
+    assert ab['Bill'].phones[0].value == '1234567890'
+    print('All Ok)')
